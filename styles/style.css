@@ -26,6 +26,8 @@ body {
     align-items: center;
     flex-direction: column;
     font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 #game-zone {
@@ -44,8 +46,15 @@ img {
 }
 
 aside {
-    font-weight: 700;
     font-size: 1.5em;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-transform: initial;
 }
 
 /* Fonts */
@@ -68,12 +77,27 @@ h1 {
     background: var(--white);
     border-radius: 15px;
     padding: 13px 85px;
-    font-size: 2.5em;
-    text-transform: uppercase;
+    font-size: 1em;
     border: none;
+    text-transform: uppercase;
     font-weight: 700;
     cursor: pointer;
 
+}
+
+.dialog {
+    width: 90%;
+    max-width: 800px;
+    max-height: 600px;
+    margin: auto;
+    border-radius: 30px;
+    border: none;
+    font-size: 1.5em;
+}
+
+.dialog::backdrop {
+    background: rgba(87, 68, 87, 0.54);
+    filter: blur(20px)
 }
 
 /*-------------------- Start screen --------------------*/
@@ -85,6 +109,10 @@ h1 {
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
+}
+
+#start-button {
+    font-size: 2.5em
 }
 
 .left-player {
@@ -102,19 +130,63 @@ h1 {
     max-width: 40%;
 }
 
+#how {
+    font-size: 1.3em;
+    text-decoration: underline;
+    text-transform: initial;
+    color: white;
+    cursor: pointer;
+}
+
+#how-dialog {
+    padding: 2em 1em 1em 1em;
+    text-transform: initial;
+    font-weight: 500;
+    font-size: 1.2em;
+}
+
+#how-dialog #close {
+    position: absolute;
+    right: 1em;
+    top: 1em;
+    cursor: pointer;
+}
+
+#how-dialog article {
+    margin-bottom: 1em;
+}
+
+#how-dialog article.controls {
+    display: flex;
+    justify-content: space-between;
+}
+
+#how-dialog article.controls img {
+    margin-left: 1em;
+    object-fit: contain;
+}
+
+#how-dialog h3 {
+    font-size: 1.8em;
+    font-weight: 500;
+    font-family: 'Lobster', cursive;
+    color: var(--pink)
+}
+
 /*-------------------- Game canvas --------------------*/
 #canvas-screen {
     display: none;
     width: 100%;
     margin: 0 auto;
     justify-content: space-between;
-    text-transform: uppercase;
     color: var(--white)
 }
 
 #canvas {
-    border: 2px solid red;
     margin: 0 auto;
+    border-width: 8px;
+    border-style: solid;
+    border-image: linear-gradient(to bottom, var(--pink), var(--orange)) 1;
 }
 
 #scorebox {
@@ -132,21 +204,28 @@ h1 {
 .stamina-display {
     display: flex;
     justify-content: space-between;
-    width: 200px;
 }
 
 .stamina-gauge {
+    max-width: 100%;
     width: 220px;
     height: 29px;
     border-radius: 30px;
     background: white;
     overflow: hidden;
+
 }
 
 .stamina-bar {
-    width : 100%;
+    width: 100%;
     height: 100%;
-    background: var(--pink)
+    background: var(--pink);
+    transition: width 1s;
+
+}
+
+#fight-screen .stamina-gauge {
+    border: 1px solid var(--pink);
 }
 
 /*-------------------- Fight screen --------------------*/
@@ -154,16 +233,7 @@ h1 {
 /* Dialog and background */
 #fight-screen-dialog {
     height: 90%;
-    width: 90%;
-    margin: auto;
-    border-radius: 30px;
-    border: none;
 }
-
-#fight-screen-dialog::backdrop {
-    background: rgba(87, 68, 87, 0.54);
-}
-
 #fight-screen {
     position: relative;
     overflow: hidden;
@@ -171,19 +241,29 @@ h1 {
     height: 100%;
     width: 100%;
     display: flex;
-    background-image: linear-gradient(to right, rgba(255,255,255,.8), rgba(255,255,255,.8)), url(./../assets/lightning.svg) ;
-    background-size : 100% 100%;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url(./../assets/lightning.svg);
+    background-size: 100% 100%;
 }
 
-#fight-screen .jammer, #fight-screen .blocker {
+#fight-screen .jammer,
+#fight-screen .blocker {
     width: 40%;
 }
+
 /* Jammer */
 #fight-screen .jammer .jammer-pic {
     width: 300px;
     position: absolute;
     left: -50px;
     bottom: -100px;
+}
+
+#fight-screen .stats {
+    margin: 1em auto;
+}
+
+.jammer .stamina-display {
+    width: 220px;
 }
 
 
@@ -193,6 +273,8 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 20%;
+    position: relative;
 }
 
 #fight-screen .fight-actions .btn {
@@ -201,9 +283,9 @@ h1 {
     padding: 13px 41px;
     border-radius: 30px;
     color: var(--white);
-    text-transform: uppercase;
-    font-size: 1.5em;
     margin: 2em auto;
+    font-weight: 500;
+    z-index: 10;
 }
 
 #btn-force {
@@ -222,10 +304,49 @@ h1 {
     justify-content: flex-end;
     align-items: flex-end;
 }
+
 #fight-screen .blocker .blocker-pic {
     transform: scaleX(-1);
     width: 300px;
     position: absolute;
     top: 20px;
     right: -100px;
+}
+
+#fight-screen .blocker .stats {
+    width: 100%;
+    text-align: right;
+}
+
+/* Case : win */
+.continue-section {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.continue-section .bravo {
+    font-size: 2em;
+    text-transform: uppercase;
+    margin-bottom: 1em;
+}
+
+#btn-continue {
+    background: var(--orange);
+    color: white;
+    border-radius: 30px;
+    padding: 13px 46px;
+}
+
+/* Case : fail */
+.fight-again {
+    position: absolute;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    top: 10%;
+    left: 5px;
+    width: 300px;
 }

@@ -1,5 +1,5 @@
 class Jammer {
-    constructor(canvas, ctx) {
+    constructor(canvas, ctx, strength, speed) {
         this.canvas = canvas;
         this.ctx = ctx;
         this.width = 50
@@ -10,39 +10,113 @@ class Jammer {
         // this.image.src = image;
         this.icon = new Image()
         this.icon.src = "./assets/jammer-icon.png";
-        this.speedX = 0;
         this.outSide = null;
+        this.strength = strength
+        this.speed = speed
+        this.stamina = 100
     }
 
     draw() {
         this.ctx.drawImage(this.icon, this.x, this.y, this.width, this.height);
     }
 
-	moveLeft() {
-		if (this.x <= 5) {
-			return
-		}
-		this.x -= 5
-	}
-	moveRight() {
-		if (this.x >= this.canvas.width - this.width - 5) {
-			return
-		}
-		this.x += 5
-	}
+    moveLeft() {
+        if (this.x <= 5) {
+            return
+        }
+        this.x -= 5
+    }
+    moveRight() {
+        if (this.x >= this.canvas.width - this.width - 5) {
+            return
+        }
+        this.x += 5
+    }
 
     bottomEdge() {
-		return this.y + this.height
-	}
-	leftEdge() {
-		return this.x
-	}
-	rightEdge() {
-		return this.x + this.width
-	}
-	topEdge() {
-		return this.y
-	}
+        return this.y + this.height
+    }
+    leftEdge() {
+        return this.x
+    }
+    rightEdge() {
+        return this.x + this.width
+    }
+    topEdge() {
+        return this.y
+    }
+
+    fight(blocker, jammer, game) {
+        document.getElementById('btn-force').addEventListener('click', function () {
+            let bruteStrength = jammer.strength - blocker.strength
+            let i = 0
+            let rand = Math.floor(Math.random() * (10 + i)) + 1
+            let outcome = bruteStrength + rand
+            if (outcome > 5) {
+                document.querySelector('section.blocker').style.display = 'none'
+                document.querySelector('section.fight-actions').style.display = 'none';
+                document.querySelector('section.jammer').style.width = "70%"
+                let continueSection = document.createElement('section')
+                continueSection.classList.add('continue-section')
+                document.getElementById('fight-screen').appendChild(continueSection)
+                continueSection.innerHTML = "<p class='bravo'>You did it !</p><button id='btn-continue' class='btn'>Continue</button>"
+                document.getElementById('btn-continue').addEventListener('click', function () {
+                    document.querySelector('.continue-section').remove()
+                    document.getElementById('fight-screen-dialog').close()
+                    document.querySelector('section.blocker').style.display = 'flex'
+                    document.querySelector('section.fight-actions').style.display = 'flex';
+                    document.querySelector('section.jammer').style.width = "40%"
+                    setTimeout(() => {
+                        game.startGame()
+                    }, 500)
+                    setTimeout(() => {
+                        game.isColliding = false
+                    }, 1500)
+                })
+            } else {
+                let fightAgain = document.createElement('div')
+                fightAgain.classList.add('fight-again')
+                fightAgain.innerHTML = "<p>OH NO...</p><p>Your opponent was stronger than you... Try again</p>"
+                document.querySelector('section.fight-actions').prepend(fightAgain)
+                setTimeout(() => {
+                    document.querySelector('.fight-again').remove()
+                }, 2000)
+                jammer.stamina -= 10
+                console.log(jammer.stamina)
+                jammer.updateStamina()
+                // game.gameOver()
+                i++
+                return
+            }
+        })
+        document.getElementById('btn-feint').addEventListener('click', function () {
+            console.log('feint')
+        })
+
+    }
+
+    updateStamina() {
+        let staminaCounterCanvas = document.querySelector('#canvas-screen .stamina-counter')
+        let staminaCounterFight = document.querySelector('#fight-screen .stamina-counter')
+        let staminaBarCanvas = document.querySelector("#canvas-screen .stamina-bar")
+        let staminaBarFight = document.querySelector("#fight-screen .stamina-bar")
+        let staminaGaugeFight = document.querySelector("#fight-screen .stamina-gauge")
+        staminaCounterCanvas.innerHTML = this.stamina
+        staminaCounterFight.innerHTML = this.stamina
+        staminaBarCanvas.style.width = this.stamina + "%"
+        staminaBarFight.style.width = this.stamina + "%"
+
+        if (this.stamina <= 40) {
+            staminaBarCanvas.style.background = "#E54778"
+            staminaBarFight.style.background = "#E54778"
+            staminaGaugeFight.style.border = "1px solid #E54778"
+        }
+        if (this.stamina <= 0) {
+            console.log("perdu")
+        }
+        return
+
+    }
 
 }
 

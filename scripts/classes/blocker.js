@@ -8,6 +8,9 @@ class Blocker {
         this.y = -20
         this.icon = new Image()
         this.icon.src = "./assets/blocker-icon.png"
+        // this.strength = Math.floor(Math.random() * 10)
+        this.strength = 9
+        this.speed = Math.floor(Math.random() *10)
     }
 
     draw() {

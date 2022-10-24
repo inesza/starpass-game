@@ -14,13 +14,40 @@
 <body>
   <section id="game-zone">
     <section id="start-screen">
-      <div>
+      <header>
         <img src="./assets/logo.svg" alt="StarPass" />
         <h1>A roller derby game</h1>
-      </div>
-      <button id="start-button" class="btn double-shadow">Start game</button>
+      </header>
+      <button id="start-button" class="btn double-shadow">Start</button>
+      <span id="how">How to play?</span>
       <img src="./assets/indian-blocker.png" alt="" class="left-player">
       <img src="./assets/pink-jammer.png" alt="" class="right-player">
+      <dialog id="how-dialog" class="double-shadow dialog">
+        <img src="./assets/close-icon.svg" alt="" id="close">
+        <article class="controls">
+          <div>
+            <h3>As a jammer, your role is to avoid blockers</h3>
+            <p>Use left and right arrow keys to avoid your opponents</p>
+            <p><strong>1 overtaken opponent = 1 point</strong></p>
+          </div>
+          <img src="./assets/arrows-control.png" alt="">
+        </article>
+        <article>
+          <h3>With a little help from your friends</h3>
+          <p>Bump into your teammates for a little stamina boost</p>
+        </article>
+        <article>
+          <h3>Fight them if you have to</h3>
+          <p>If you bump into one of your opponents, you’ll have to fight your way past them.
+            You can try either brute strength or ruse, but pay attention to your stats and theirs.</p>
+        </article>
+        <article>
+          <h3>But don’t get too exhausted!</h3>
+          <p>If you loose the fight, you’ll lose some stamina and must keep fighting.</p>
+          <p><strong>If your stamina falls to 0, you’ll loose</strong></p>
+        </article>
+
+      </dialog>
     </section>
     <section id="canvas-screen">
       <aside id="stamina">
@@ -40,7 +67,7 @@
         <p>points</p>
       </aside>
     </section>
-    <dialog id="fight-screen-dialog" class="double-shadow">
+    <dialog id="fight-screen-dialog" class="double-shadow dialog">
       <section id="fight-screen">
         <section class="jammer">
           <section>
