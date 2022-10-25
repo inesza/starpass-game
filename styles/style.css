@@ -7,6 +7,7 @@
     --pink: #FF00C7;
     --orange: #FF9900;
     --white: #fff;
+    --danger-pink: #E54778;
 }
 
 * {
@@ -64,6 +65,7 @@ h1 {
     color: var(--white);
     text-align: center;
     font-size: 3em;
+    font-weight: 500;
 }
 
 /* Utils */
@@ -97,7 +99,34 @@ h1 {
 
 .dialog::backdrop {
     background: rgba(87, 68, 87, 0.54);
-    filter: blur(20px)
+    backdrop-filter: blur(4px);
+}
+
+.danger-pink {
+    background-color: var(--danger-pink);
+    border-color: var(--danger-pink);
+}
+
+.pink {
+    background-color: var(--pink);
+    border-color: var(--pink)
+}
+
+.hidden {
+    display: none;
+}
+
+.shrink {
+    animation: shrink .5s forwards
+}
+
+@keyframes shrink {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0.97)
+    }
 }
 
 /*-------------------- Start screen --------------------*/
@@ -110,9 +139,46 @@ h1 {
     align-items: center;
     flex-direction: column;
 }
+#start-button,
+#retry-btn,
+#ready-button {
+    font-size: 2.5em;
+}
 
-#start-button {
-    font-size: 2.5em
+#start-button:not(:disabled),
+#retry-btn:not(:disabled),
+#ready-button:not(:disabled) {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.97);
+        box-shadow: -5px -5px 0px var(--orange), 5px 5px 0px var(--pink), 0 0 0 0 rgba(0, 0, 0, 0.7);
+    }
+
+    50% {
+        transform: scale(1);
+        box-shadow: -5px -5px 0px var(--orange), 5px 5px 0px var(--pink), 0 0 20px 20px rgba(0, 0, 0, 0);
+    }
+
+    100% {
+        transform: scale(0.97);
+        box-shadow: -5px -5px 0px var(--orange), 5px 5px 0px var(--pink), 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+}
+
+#start-button:not(:disabled):hover,
+#retry-btn:not(:disabled):hover,
+#ready-button:not(:disabled):hover {
+    animation-play-state: paused;
+    transition: .5s;
+    background-color: white;
+}
+
+*:disabled {
+    font-style: italic;
+    opacity: 1;
 }
 
 .left-player {
@@ -136,6 +202,11 @@ h1 {
     text-transform: initial;
     color: white;
     cursor: pointer;
+    transition: .5s;
+}
+
+#how:hover {
+    color: var(--orange);
 }
 
 #how-dialog {
@@ -172,6 +243,58 @@ h1 {
     font-family: 'Lobster', cursive;
     color: var(--pink)
 }
+
+/*-------------------- Jammer choice --------------------*/
+#jammer-choice {
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+#jammer-choice .title {
+    width: 100%;
+    text-align: center;
+}
+
+#jammers {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+#jammer-choice article {
+    height: 400px;
+    border-radius: 15px;
+    background: white;
+    width: 30%;
+    max-width: 250px;
+    margin: 2em;
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    overflow: hidden;
+}
+
+#jammer-choice article > div {
+    height: 40%;
+    width: 100%;
+    background: linear-gradient(135deg, var(--orange), var(--pink));
+    padding: 1em;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
 
 /*-------------------- Game canvas --------------------*/
 #canvas-screen {
@@ -219,13 +342,14 @@ h1 {
 .stamina-bar {
     width: 100%;
     height: 100%;
-    background: var(--pink);
+    /* background: var(--pink); */
     transition: width 1s;
 
 }
 
 #fight-screen .stamina-gauge {
-    border: 1px solid var(--pink);
+    border-width: 1px;
+    border-style: solid;
 }
 
 /*-------------------- Fight screen --------------------*/
@@ -234,6 +358,7 @@ h1 {
 #fight-screen-dialog {
     height: 90%;
 }
+
 #fight-screen {
     position: relative;
     overflow: hidden;
@@ -274,7 +399,6 @@ h1 {
     justify-content: center;
     align-items: center;
     width: 20%;
-    position: relative;
 }
 
 #fight-screen .fight-actions .btn {
@@ -320,7 +444,7 @@ h1 {
 
 /* Case : win */
 .continue-section {
-    width: 30%;
+    width: 40%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -342,11 +466,47 @@ h1 {
 
 /* Case : fail */
 .fight-again {
+    /* background: rgba(255, 255, 255, 0.842); */
+    border-radius: 0 0 15px 15px;
+    padding: 1em;
     position: absolute;
-    font-size: 1.5em;
+    font-size: 1em;
     font-weight: bold;
     text-align: center;
-    top: 10%;
-    left: 5px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 300px;
+    z-index: 20;
+    text-transform: initial;
+}
+
+
+/*-------------------- Game over screen --------------------*/
+#game-over {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-image: url(./../assets/blond-jammer.png);
+    background-position: bottom 0 right 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    color: white;
+}
+
+#game-over .score {
+    font-size: 1.4em;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+#game-over .points {
+    font-size: 1.7em;
+}
+
+#game-over #final-score {
+    font-size: 2em;
 }

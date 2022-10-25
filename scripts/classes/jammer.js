@@ -1,19 +1,21 @@
 class Jammer {
-    constructor(canvas, ctx, strength, speed) {
+    constructor(canvas, ctx, strength, speed, image) {
         this.canvas = canvas;
         this.ctx = ctx;
         this.width = 50
         this.height = 50
         this.x = this.canvas.width / 2 - this.width / 2;
         this.y = this.canvas.height - 100
-        // this.image = new Image();
-        // this.image.src = image;
+        this.image = new Image();
+        this.image.src = image;
         this.icon = new Image()
         this.icon.src = "./assets/jammer-icon.png";
         this.outSide = null;
         this.strength = strength
         this.speed = speed
         this.stamina = 100
+        this.speedX = 10
+        this.isBoosted = false
     }
 
     draw() {
@@ -24,38 +26,56 @@ class Jammer {
         if (this.x <= 5) {
             return
         }
-        this.x -= 5
+        this.x -= this.speedX
     }
     moveRight() {
         if (this.x >= this.canvas.width - this.width - 5) {
             return
         }
-        this.x += 5
+        this.x += this.speedX
     }
 
-    bottomEdge() {
+    bottomEdgeJ() {
         return this.y + this.height
     }
-    leftEdge() {
+    leftEdgeJ() {
         return this.x
     }
-    rightEdge() {
+    rightEdgeJ() {
         return this.x + this.width
     }
-    topEdge() {
+    topEdgeJ() {
         return this.y
     }
 
     fight(blocker, jammer, game) {
-        document.getElementById('btn-force').addEventListener('click', function () {
-            let bruteStrength = jammer.strength - blocker.strength
+        document.getElementById('btn-force').addEventListener('click', fightForce)
+        document.getElementById('btn-feint').addEventListener('click', fightFeint)
+        let brutePower = ''
+        let loseMsg = ""
+        function fightForce() {
+            brutePower = "force"
+            loseMsg = "stronger"
+            fightOutcome()
+        }
+        function fightFeint() {
+            brutePower = "speed"
+            loseMsg = "faster"
+            fightOutcome()
+        }
+        function fightOutcome () {
+            if (brutePower === 'force') {
+                brutePower = jammer.strength - blocker.strength
+            } else if (brutePower === 'speed') {
+                brutePower = jammer.speed - blocker.speed
+            }            
             let i = 0
             let rand = Math.floor(Math.random() * (10 + i)) + 1
-            let outcome = bruteStrength + rand
+            let outcome = brutePower + rand
             if (outcome > 5) {
                 document.querySelector('section.blocker').style.display = 'none'
                 document.querySelector('section.fight-actions').style.display = 'none';
-                document.querySelector('section.jammer').style.width = "70%"
+                document.querySelector('section.jammer').style.width = "60%"
                 let continueSection = document.createElement('section')
                 continueSection.classList.add('continue-section')
                 document.getElementById('fight-screen').appendChild(continueSection)
@@ -73,10 +93,13 @@ class Jammer {
                         game.isColliding = false
                     }, 1500)
                 })
+                document.getElementById('btn-force').removeEventListener('click', fightForce)
+                document.getElementById('btn-feint').removeEventListener('click', fightFeint)
+                return
             } else {
                 let fightAgain = document.createElement('div')
                 fightAgain.classList.add('fight-again')
-                fightAgain.innerHTML = "<p>OH NO...</p><p>Your opponent was stronger than you... Try again</p>"
+                fightAgain.innerHTML = `<h3>OH NO...</h3><p>Your opponent was ${loseMsg} than you... Try again</p>`
                 document.querySelector('section.fight-actions').prepend(fightAgain)
                 setTimeout(() => {
                     document.querySelector('.fight-again').remove()
@@ -84,14 +107,11 @@ class Jammer {
                 jammer.stamina -= 10
                 console.log(jammer.stamina)
                 jammer.updateStamina()
-                // game.gameOver()
+                game.gameOver()
                 i++
                 return
             }
-        })
-        document.getElementById('btn-feint').addEventListener('click', function () {
-            console.log('feint')
-        })
+        }
 
     }
 
@@ -107,12 +127,20 @@ class Jammer {
         staminaBarFight.style.width = this.stamina + "%"
 
         if (this.stamina <= 40) {
-            staminaBarCanvas.style.background = "#E54778"
-            staminaBarFight.style.background = "#E54778"
-            staminaGaugeFight.style.border = "1px solid #E54778"
+            staminaBarCanvas.classList.add('danger-pink')
+            staminaBarFight.classList.add('danger-pink')
+            staminaGaugeFight.classList.add('danger-pink')
+            staminaBarCanvas.classList.remove('pink')
+            staminaBarFight.classList.remove('pink')
+            staminaGaugeFight.classList.remove('pink')
         }
         if (this.stamina <= 0) {
-            console.log("perdu")
+            staminaBarCanvas.classList.remove('danger-pink')
+            staminaBarFight.classList.remove('danger-pink')
+            staminaGaugeFight.classList.remove('danger-pink')
+            staminaBarCanvas.classList.add('pink')
+            staminaBarFight.classList.add('pink')
+            staminaGaugeFight.classList.add('pink')
         }
         return
 

@@ -1,15 +1,15 @@
 class Blocker {
-    constructor(canvas, ctx) {
+    constructor(canvas, ctx, x, y) {
         this.ctx = ctx
         this.canvas = canvas
-        this.x = Math.floor(Math.random() * (this.canvas.width / 2)) + 20
+        this.x = x
         this.width = 50
         this.height = 50
-        this.y = -20
+        this.y = y
         this.icon = new Image()
         this.icon.src = "./assets/blocker-icon.png"
         // this.strength = Math.floor(Math.random() * 10)
-        this.strength = 9
+        this.strength = 100
         this.speed = Math.floor(Math.random() *10)
     }
 

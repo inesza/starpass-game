@@ -1,18 +1,22 @@
 import Blocker from "./blocker.js"
 import Jammer from "./jammer.js"
 import Track from "./track.js"
+import Booster from "./booster.js"
 
 
 class Game {
-    constructor() {
+    constructor(jammer) {
         this.canvas = null
         this.ctx = null
         this.init()
         this.track = new Track(this.canvas, this.ctx)
-        this.jammer = new Jammer(this.canvas, this.ctx, 5, 8)
+        // this.jammer = new Jammer(this.canvas, this.ctx, 5, 8)
+        this.jammer = jammer
         this.frames = 0
         this.score = 0
         this.blockers = []
+        this.boosters = []
+        this.isColliding = false 
     }
     init() {
         this.canvas = document.getElementById("canvas")
@@ -22,15 +26,29 @@ class Game {
 
     startGame() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        if (this.frames % 30 === 0) {
-            this.blockers.push(new Blocker(this.canvas, this.ctx))
+        if (this.frames % 120 === 0) {
+            let x =  (Math.floor(Math.random() * (this.canvas.width / 2)))
+            let y = -20
+            let rand = Math.floor(Math.random() * 50)
+            this.blockers.push(new Blocker(this.canvas, this.ctx, x, y))
+            this.blockers.push(new Blocker(this.canvas, this.ctx, x + 50, y + rand))
+            this.blockers.push(new Blocker(this.canvas, this.ctx, x + 120, y - rand))
+            this.blockers.push(new Blocker(this.canvas, this.ctx, x + 200, y))
+            this.boosters.push(new Booster(this.canvas, this.ctx))
         }
         this.track.draw();
         this.track.move();
 
         this.jammer.draw();
-
+        for (const booster of this.boosters) {
+            booster.draw()
+            booster.move()
+            booster.checkBooster(this.jammer)
+        }
         for (const blocker of this.blockers) {
+            blocker.draw()
+            blocker.draw()
+            blocker.draw()
             blocker.draw()
             blocker.move()
             this.updateScore(blocker, this.jammer);
@@ -43,13 +61,12 @@ class Game {
                 return
             }
         }
-
         this.frames = requestAnimationFrame(() => { this.startGame() });
     }
 
     updateScore(blocker, jammer) {
         let scoreCounter = document.getElementById('score-counter')
-        if (this.frames % 60 === 0) {
+        if (this.frames % 120 === 0) {
             this.score++
             scoreCounter.innerHTML = this.score
         }
@@ -57,11 +74,11 @@ class Game {
 
     checkCollision(blocker, jammer) {
         const isInX =
-            blocker.rightEdge() >= jammer.leftEdge() &&
-            blocker.leftEdge() <= jammer.rightEdge()
+            blocker.rightEdge() >= jammer.leftEdgeJ() &&
+            blocker.leftEdge() <= jammer.rightEdgeJ()
         const isInY =
-            blocker.topEdge() <= jammer.bottomEdge() &&
-            blocker.bottomEdge() >= jammer.topEdge()
+            blocker.topEdge() <= jammer.bottomEdgeJ() &&
+            blocker.bottomEdge() >= jammer.topEdgeJ()
         return isInX && isInY
     }
 
@@ -73,23 +90,28 @@ class Game {
         cancelAnimationFrame(this.frames)
         let blocker = new Blocker(this.canvas, this.ctx)
         document.getElementById('fight-screen-dialog').showModal()
-        let blockerStrength = document.getElementById('blocker-strength')
-        let blockerSpeed = document.getElementById('blocker-speed')
-        let jammerStrength = document.getElementById('jammer-strength')
-        let jammerSpeed = document.getElementById('jammer-speed')
-
-        blockerStrength.innerHTML = blocker.strength
-        blockerSpeed.innerHTML = blocker.speed
-        jammerStrength.innerHTML = this.jammer.strength
-        jammerSpeed.innerHTML = this.jammer.speed
-
+        document.getElementById('blocker-strength').innerHTML = blocker.strength
+        document.getElementById('blocker-speed').innerHTML = blocker.speed
+        document.getElementById('jammer-strength').innerHTML = this.jammer.strength
+        document.getElementById('jammer-speed').innerHTML = this.jammer.speed
         this.jammer.fight(blocker, this.jammer, this)
     }
 
     gameOver() {
         if (this.jammer.stamina <= 0) {
-            alert ('GAME OVER')
+            document.getElementById('fight-screen-dialog').close()
+            document.getElementById('game-zone').style.display = 'none'
+            document.getElementById('game-over').style.display = "flex"
+            document.getElementById('final-score').innerHTML = this.score
+            this.jammer.stamina = 100
+            
+            this.jammer.updateStamina()
+            this.updateScore()
+            this.score = 0
+            this.blockers = []
+            this.boosters = []
         }
+        
     }
 
     createEventListeners() {
