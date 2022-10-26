@@ -4,7 +4,7 @@ class Track {
     this.canvas = canvas;
     this.ctx = ctx;
     this.image = new Image();
-    this.image.src = "./../../assets/track.png";
+    this.image.src = "./assets/track.png";
     this.width = this.canvas.width
     this.height = this.canvas.height
     this.x = 0;
