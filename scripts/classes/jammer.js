@@ -86,6 +86,7 @@ class Jammer {
                     document.querySelector('section.blocker').style.display = 'flex'
                     document.querySelector('section.fight-actions').style.display = 'flex';
                     document.querySelector('section.jammer').style.width = "40%"
+                    game.score -= 4
                     setTimeout(() => {
                         game.startGame()
                     }, 500)

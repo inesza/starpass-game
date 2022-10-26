@@ -5,11 +5,7 @@ window.onload = () => {
 	let canvas = document.getElementById("canvas")
 	let ctx = canvas.getContext("2d")
 
-	window.onkeydown = function (e) {
-		if (e.keyCode === 27) { // Key code for ESC key
-			e.preventDefault();
-		}
-	};
+
 
 	let chosenJammer = false
 	let jammers = []

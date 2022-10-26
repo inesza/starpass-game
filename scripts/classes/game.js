@@ -51,7 +51,7 @@ class Game {
             blocker.draw()
             blocker.draw()
             blocker.move()
-            this.updateScore(blocker, this.jammer);
+            
             if (this.isColliding) {
                 continue
             }
@@ -61,13 +61,14 @@ class Game {
                 return
             }
         }
+        this.updateScore();
         this.frames = requestAnimationFrame(() => { this.startGame() });
     }
 
-    updateScore(blocker, jammer) {
+    updateScore() {
         let scoreCounter = document.getElementById('score-counter')
-        if (this.frames % 120 === 0) {
-            this.score++
+        if (this.frames % 120 === 0 && this.frames > 0) {
+            this.score += 4
             scoreCounter.innerHTML = this.score
         }
     }
@@ -87,6 +88,8 @@ class Game {
     }
 
     fightMode() {
+        let blockerPics = ['./assets/indian-blocker.png', './assets/red-blocker.png', './assets/turquoise-blocker.png']
+        let rand = Math.floor(Math.random() * blockerPics.length)
         cancelAnimationFrame(this.frames)
         let blocker = new Blocker(this.canvas, this.ctx)
         document.getElementById('fight-screen-dialog').showModal()
@@ -94,6 +97,7 @@ class Game {
         document.getElementById('blocker-speed').innerHTML = blocker.speed
         document.getElementById('jammer-strength').innerHTML = this.jammer.strength
         document.getElementById('jammer-speed').innerHTML = this.jammer.speed
+        document.getElementById('random-blocker-pic').src = blockerPics[rand]
         this.jammer.fight(blocker, this.jammer, this)
     }
 
@@ -123,6 +127,8 @@ class Game {
                 case "ArrowRight":
                     this.jammer.moveRight()
                     break
+                    case "Escape":
+                        event.preventDefault()
                 default:
                     break
             }
