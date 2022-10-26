@@ -36,16 +36,16 @@ class Jammer {
     }
 
     bottomEdgeJ() {
-        return this.y + this.height
+        return this.y + this.height -5
     }
     leftEdgeJ() {
-        return this.x
+        return this.x + 5
     }
     rightEdgeJ() {
-        return this.x + this.width
+        return this.x + this.width -5
     }
     topEdgeJ() {
-        return this.y
+        return this.y +5
     }
 
     fight(blocker, jammer, game) {
@@ -69,8 +69,7 @@ class Jammer {
             } else if (brutePower === 'speed') {
                 brutePower = jammer.speed - blocker.speed
             }            
-            let i = 0
-            let rand = Math.floor(Math.random() * (10 + i)) + 1
+            let rand = Math.floor(Math.random() * (10)) + 1
             let outcome = brutePower + rand
             if (outcome > 5) {
                 document.querySelector('section.blocker').style.display = 'none'
@@ -106,10 +105,8 @@ class Jammer {
                     document.querySelector('.fight-again').remove()
                 }, 2000)
                 jammer.stamina -= 10
-                console.log(jammer.stamina)
                 jammer.updateStamina()
                 game.gameOver()
-                i++
                 return
             }
         }

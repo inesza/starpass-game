@@ -21,16 +21,16 @@ class Blocker {
     }
 
     bottomEdge() {
-		return this.y + this.height
+		return this.y + this.height - 5
 	}
 	leftEdge() {
-		return this.x
+		return this.x + 5
 	}
 	rightEdge() {
-		return this.x + this.width
+		return this.x + this.width - 5
 	}
 	topEdge() {
-		return this.y
+		return this.y + 5
 	}
 
 }

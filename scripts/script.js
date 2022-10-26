@@ -4,8 +4,11 @@ import Jammer from "./classes/jammer.js";
 window.onload = () => {
 	let canvas = document.getElementById("canvas")
 	let ctx = canvas.getContext("2d")
+	document.getElementById('sound-switch').addEventListener('click', soundSwitch)
+	function soundSwitch() {
 
 
+	}
 
 	let chosenJammer = false
 	let jammers = []
@@ -88,6 +91,18 @@ window.onload = () => {
 
 	})
 
+	function audios() {
+		let pop = new Audio('./assets/sounds/pop.wav')
+		let buttons = document.querySelectorAll('button')
+		buttons.forEach((button) => {
+			console.log(button)
+			button.addEventListener('click', function() {
+				pop.play()
+			})
+		})
+		let cheer = new Audio()
+	}
+	audios()
 
 
 }

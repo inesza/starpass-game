@@ -19,22 +19,22 @@ class Booster {
     }
 
     bottomEdge() {
-        return this.y + this.height
+        return this.y + this.height - 5
     }
     leftEdge() {
-        return this.x
+        return this.x + 5
     }
     rightEdge() {
-        return this.x + this.width
+        return this.x + this.width - 5
     }
     topEdge() {
-        return this.y
+        return this.y + 5
     }
 
     checkBooster(jammer) {
         if (!jammer.isBoosted) {
             const boosterInX =
-                this.rightEdge() >= jammer.leftEdgeJ() && // jammer.leftEdgeJ() returns undefined
+                this.rightEdge() >= jammer.leftEdgeJ() && 
                 this.leftEdge() <= jammer.rightEdgeJ()
             const boosterInY =
                 this.topEdge() <= jammer.bottomEdgeJ() &&

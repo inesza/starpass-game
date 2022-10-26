@@ -10,13 +10,12 @@ class Game {
         this.ctx = null
         this.init()
         this.track = new Track(this.canvas, this.ctx)
-        // this.jammer = new Jammer(this.canvas, this.ctx, 5, 8)
         this.jammer = jammer
         this.frames = 0
         this.score = 0
         this.blockers = []
         this.boosters = []
-        this.isColliding = false 
+        this.isColliding = false
     }
     init() {
         this.canvas = document.getElementById("canvas")
@@ -27,7 +26,7 @@ class Game {
     startGame() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (this.frames % 120 === 0) {
-            let x =  (Math.floor(Math.random() * (this.canvas.width / 2)))
+            let x = (Math.floor(Math.random() * (this.canvas.width / 2)))
             let y = -20
             let rand = Math.floor(Math.random() * 50)
             this.blockers.push(new Blocker(this.canvas, this.ctx, x, y))
@@ -38,8 +37,18 @@ class Game {
         }
         this.track.draw();
         this.track.move();
+        if (this.isColliding) {
+            if (this.frames % 20 < 10) {
+                this.ctx.globalAlpha = .3
+                this.jammer.draw()
+                this.ctx.globalAlpha = 1
+            } else {
+                this.jammer.draw()
 
-        this.jammer.draw();
+            }
+        } else {
+            this.jammer.draw()
+        }
         for (const booster of this.boosters) {
             booster.draw()
             booster.move()
@@ -51,7 +60,7 @@ class Game {
             blocker.draw()
             blocker.draw()
             blocker.move()
-            
+
             if (this.isColliding) {
                 continue
             }
@@ -62,6 +71,7 @@ class Game {
             }
         }
         this.updateScore();
+
         this.frames = requestAnimationFrame(() => { this.startGame() });
     }
 
@@ -108,14 +118,14 @@ class Game {
             document.getElementById('game-over').style.display = "flex"
             document.getElementById('final-score').innerHTML = this.score
             this.jammer.stamina = 100
-            
+
             this.jammer.updateStamina()
             this.updateScore()
             this.score = 0
             this.blockers = []
             this.boosters = []
         }
-        
+
     }
 
     createEventListeners() {
@@ -127,13 +137,17 @@ class Game {
                 case "ArrowRight":
                     this.jammer.moveRight()
                     break
-                    case "Escape":
-                        event.preventDefault()
+                case "Escape":
+                    event.preventDefault()
                 default:
                     break
             }
         })
+        document.addEventListener("keyup", (e) => {
+
+        });
     }
+
 }
 
 export default Game
