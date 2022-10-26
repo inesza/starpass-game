@@ -16,6 +16,10 @@ class Game {
         this.blockers = []
         this.boosters = []
         this.isColliding = false
+        this.pressedKeys = {
+            right: false,
+            left: false,
+        }
     }
     init() {
         this.canvas = document.getElementById("canvas")
@@ -49,6 +53,11 @@ class Game {
         } else {
             this.jammer.draw()
         }
+        for (const key in this.pressedKeys) {
+            if (this.pressedKeys[key]) {
+                this.jammer.move(key)
+            }
+        }
         for (const booster of this.boosters) {
             booster.draw()
             booster.move()
@@ -79,7 +88,12 @@ class Game {
         let scoreCounter = document.getElementById('score-counter')
         if (this.frames % 120 === 0 && this.frames > 0) {
             this.score += 4
-            scoreCounter.innerHTML = this.score
+            if (this.score <= 1) {
+                scoreCounter.innerHTML = `<span>${this.score}</span> point`
+            } else {
+                scoreCounter.innerHTML = `<span>${this.score}</span> points`
+            }
+            
         }
     }
 
@@ -129,13 +143,14 @@ class Game {
     }
 
     createEventListeners() {
+        // For keyboards
         document.addEventListener("keydown", (event) => {
             switch (event.key) {
                 case "ArrowLeft":
-                    this.jammer.moveLeft()
+                    this.pressedKeys.left = true
                     break
                 case "ArrowRight":
-                    this.jammer.moveRight()
+                    this.pressedKeys.right = true
                     break
                 case "Escape":
                     event.preventDefault()
@@ -143,9 +158,36 @@ class Game {
                     break
             }
         })
-        document.addEventListener("keyup", (e) => {
-
+        document.addEventListener("keyup", (event) => {
+            switch (event.key) {
+                case "ArrowLeft":
+                    this.pressedKeys.left = false
+                    break
+                case "ArrowRight":
+                    this.pressedKeys.right = false
+                    break
+            }
         });
+
+        // For touchscreens
+        this.canvas.addEventListener('touchstart', (e) => {
+            let clientX = e.touches[0].clientX;
+            if (clientX > this.canvas.width / 2) {
+                this.pressedKeys.right = true
+            } else {
+                this.pressedKeys.left = true
+            }
+        }, false)
+
+        this.canvas.addEventListener('touchend', (e) => {
+            // let clientX = e.touches[0].clientX;
+            // if (clientX > this.canvas.width / 2) {
+                this.pressedKeys.right = false
+            // } else {
+                this.pressedKeys.left = false
+            // }
+
+        }, false)
     }
 
 }

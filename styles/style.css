@@ -51,6 +51,7 @@ img {
 
 aside {
     font-size: 1.5em;
+    padding: .5em;
 }
 
 header {
@@ -81,6 +82,10 @@ h1 {
 
 .double-shadow {
     box-shadow: -5px -5px 0px var(--orange), 5px 5px 0px var(--pink);
+}
+
+.sound-off.double-shadow {
+    box-shadow: -5px -5px 0px #CCCBC9, 5px 5px 0px #878787;
 }
 
 .btn {
@@ -366,13 +371,26 @@ h1 {
     flex-direction: column;
 }
 
-#score-counter {
+#score-counter span {
     font-size: 3em;
+}
+
+aside {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+#stamina {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .stamina-display {
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    max-width: 220px;
 }
 
 .stamina-gauge {
@@ -408,11 +426,11 @@ h1 {
 #fight-screen {
     position: relative;
     overflow: hidden;
-    padding: 2em;
+    padding: 5%;
     height: 100%;
     width: 100%;
     display: flex;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url(./assets/lightning.svg);
+    background-image: linear-gradient(to right, rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url(../assets/lightning.svg);
     background-size: 100% 100%;
 }
 
@@ -451,8 +469,9 @@ h1 {
 
 #fight-screen .fight-actions .btn {
     width: 160px;
+    max-width: 100%;
     height: 56px;
-    padding: 13px 41px;
+    padding: 0;
     border-radius: 30px;
     color: var(--white);
     margin: 2em auto;
@@ -555,8 +574,9 @@ h1 {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100%;
-    background-image: url(./assets/blond-jammer.png);
+    height: 100vh;
+    padding: 1em;
+    background-image: url(../assets/blond-jammer.png);
     background-position: bottom 0 right 0;
     background-repeat: no-repeat;
     background-size: contain;
@@ -579,8 +599,13 @@ h1 {
 
 
 /*-------------------- Reponsive-ish --------------------*/
-
 @media (max-width : 768px) {
+    .btn {
+        font-size: 0.7em;
+    }
+}
+
+@media (max-width : 600px) {
 
     #game-zone, body {
         max-height: none;
@@ -617,6 +642,10 @@ h1 {
         flex-direction: column;
     }
 
+    #scorebox {
+        width: 100%;
+    }
+
     #jammers article {
         height: 300px;
         margin: .5em .5em 1em .5em;
@@ -642,13 +671,48 @@ h1 {
         flex-direction: column;
     }
 
-    #fight-screen .blocker .blocker-pic {
-        bottom: -50px;
+    #fight-screen .jammer, #fight-screen .blocker {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        width: 100%;
+        height: 40%;
+        justify-content: space-between;
+    }
+
+    #fight-screen .jammer-infos {
+        width: 50%;
+    }
+
+    #fight-screen .jammer .jammer-pic, #fight-screen .blocker .blocker-pic {
+        position: relative;
+        height: 100%;
+        width: auto;
+        object-fit: contain  
     }
 
     #fight-screen .jammer .jammer-pic {
-        bottom: -50px;
-        position: relative;
+        left: auto;
+        bottom: auto;
+        padding-right: 1em;
+    }
+
+    #fight-screen .blocker .blocker-pic {
+        top: auto;
+        right: auto;
+        padding-left: 1em;
+    }
+
+    #fight-screen .blocker .stats {
+        width: 50%;
+        text-align: left;
+    }
+
+    #fight-screen .fight-actions {
+        width: 100%;
+        flex-direction: row;
+        column-gap: 1em;
+        height: 20%;
     }
 
     .continue-section {
@@ -656,6 +720,11 @@ h1 {
         top: 30%;
         left: 50%;
         transform: translateX(-50%);
+    }
+
+    #game-over {
+        background-size: 60%;
+        background-position: top 0 center
     }
 
 }

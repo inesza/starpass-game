@@ -63,12 +63,13 @@ window.onload = () => {
 		})
 	}
 
-
-	document.getElementById("start-button").onclick = () => {
+	document.getElementById('start-button').addEventListener('click', choiceScreen)
+	function choiceScreen() {
 		document.getElementById('jammer-choice').style.display = 'flex';
 		document.getElementById('start-screen').style.display = 'none';
 		document.getElementById('canvas-screen').style.display = 'none';
 		newGame()
+		document.getElementById('start-button').removeEventListener('click', choiceScreen)
 	}
 
 	document.getElementById('how').onclick = () => {
@@ -78,31 +79,69 @@ window.onload = () => {
 	document.getElementById('close').onclick = () => {
 		document.getElementById('how-dialog').close()
 	}
+	
 	document.getElementById('retry-btn').addEventListener('click', function () {
 		chosenJammer = false
-		jammers = []
 		document.getElementById('game-zone').style.display = 'flex'
 		document.getElementById('game-over').style.display = "none"
 		document.getElementById('start-screen').style.display = 'flex';
 		document.getElementById('canvas-screen').style.display = 'none';
-		setTimeout(() => {
-			newGame()
-		}, 500)
+		document.getElementById("jammers").innerHTML = null
+		document.getElementById('start-button').addEventListener('click', choiceScreen)
+
+	})
+
+	let pop = new Audio('./assets/sounds/pop.wav')
+	let punch = new Audio('./assets/sounds/punch.wav')
+	let swoosh = new Audio('./assets/sounds/swoosh.wav')
+	// let cheer = new Audio('./assets/sounds/test.wav')
+	// document.addEventListener('click', () => {
+	// 	cheer.play()
+	// }, {once : true})
+	
+	let soundButton = document.getElementById('sound-switch')
+	let soundButtonIcon = document.querySelector('#sound-switch img')		
+	let buttonsPop = document.querySelectorAll('.pop')
+	audios()
+	soundButton.addEventListener('click', function () {
+		soundButton.classList.toggle("sound-off")
+		if (!soundButton.classList.contains("sound-off")) {
+			console.log("play")
+			soundButtonIcon.src = "./assets/sound-on.svg"
+			audios()
+		} else {
+			console.log('pause')
+			soundButtonIcon.src = "./assets/sound-off.svg"
+			pop.pause()
+			punch.pause()
+			swoosh.pause()
+			// cheer.pause()
+		}
 
 	})
 
 	function audios() {
-		let pop = new Audio('./assets/sounds/pop.wav')
-		let buttons = document.querySelectorAll('button')
-		buttons.forEach((button) => {
-			console.log(button)
-			button.addEventListener('click', function() {
+		buttonsPop.forEach((button) => {
+			button.addEventListener('click', function () {
+				console.log("Pop")
 				pop.play()
 			})
 		})
-		let cheer = new Audio()
+		document.getElementById('btn-force').addEventListener('click', () => punch.play())
+        document.getElementById('btn-feint').addEventListener('click', () => swoosh.play())
+
 	}
-	audios()
+
+	function stopAudios() {
+		buttonsPop.forEach((button) => {
+			button.addEventListener('click', function () {
+				console.log("Pop")
+				pop.pause()
+			})
+		})
+		document.getElementById('btn-force').addEventListener('click', () => punch.pause())
+        document.getElementById('btn-feint').addEventListener('click', () => swoosh.pause())
+	}
 
 
 }

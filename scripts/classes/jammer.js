@@ -12,9 +12,8 @@ class Jammer {
         this.icon.src = "./assets/jammer-icon.png";
         this.outSide = null;
         this.strength = strength
-        this.speed = speed
         this.stamina = 100
-        this.speedX = 10
+        this.speedX = 7
         this.isBoosted = false
     }
 
@@ -28,6 +27,7 @@ class Jammer {
         }
         this.x -= this.speedX
     }
+
     moveRight() {
         if (this.x >= this.canvas.width - this.width - 5) {
             return
@@ -35,17 +35,28 @@ class Jammer {
         this.x += this.speedX
     }
 
+    move(direction) {
+        switch(direction) {
+            case "left":
+				this.moveLeft()
+				break
+			case "right":
+				this.moveRight()
+				break 
+        }
+    }
+
     bottomEdgeJ() {
-        return this.y + this.height -5
+        return this.y + this.height - 5
     }
     leftEdgeJ() {
         return this.x + 5
     }
     rightEdgeJ() {
-        return this.x + this.width -5
+        return this.x + this.width - 5
     }
     topEdgeJ() {
-        return this.y +5
+        return this.y + 5
     }
 
     fight(blocker, jammer, game) {
@@ -63,22 +74,20 @@ class Jammer {
             loseMsg = "faster"
             fightOutcome()
         }
-        function fightOutcome () {
+        function fightOutcome() {
             if (brutePower === 'force') {
                 brutePower = jammer.strength - blocker.strength
             } else if (brutePower === 'speed') {
                 brutePower = jammer.speed - blocker.speed
-            }            
+            }
             let rand = Math.floor(Math.random() * (10)) + 1
             let outcome = brutePower + rand
             if (outcome > 5) {
                 document.querySelector('section.blocker').style.display = 'none'
                 document.querySelector('section.fight-actions').style.display = 'none';
                 document.querySelector('section.jammer').style.width = "60%"
-                let continueSection = document.createElement('section')
-                continueSection.classList.add('continue-section')
-                document.getElementById('fight-screen').appendChild(continueSection)
-                continueSection.innerHTML = "<p class='bravo'>You did it !</p><button id='btn-continue' class='btn'>Continue</button>"
+                let continueSection = document.getElementById("continue-template").content.cloneNode(true);
+                document.getElementById("fight-screen").appendChild(continueSection);
                 document.getElementById('btn-continue').addEventListener('click', function () {
                     document.querySelector('.continue-section').remove()
                     document.getElementById('fight-screen-dialog').close()
