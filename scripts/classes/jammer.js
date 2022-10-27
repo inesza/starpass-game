@@ -91,7 +91,7 @@ class Jammer {
             }
             let rand = Math.floor(Math.random() * (10)) + 1
             let outcome = brutePower + rand
-            if (outcome > 5) {
+            if (outcome > 6) {
                 document.querySelector('section.blocker').style.display = 'none'
                 document.querySelector('section.fight-actions').style.display = 'none';
                 document.querySelector('section.jammer').classList.add('jammer-continue')
