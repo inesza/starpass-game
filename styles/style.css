@@ -247,19 +247,19 @@ h1 {
 
     60% {
         right: -5%;
-        transform: translateY(-50%) rotate(5deg);
+        transform: translateY(-50%) rotate(5deg) scaleX(-1);
     }
 
     70% {
-        transform: translateY(-50%) rotate(-5deg);
+        transform: translateY(-50%) rotate(-5deg) scaleX(-1);
     }
 
     80% {
-        transform: translateY(-50%) rotate(3deg);
+        transform: translateY(-50%) rotate(3deg) scaleX(-1);
     }
 
     90% {
-        transform: translateY(-50%) rotate(-3deg);
+        transform: translateY(-50%) rotate(-3deg) scaleX(-1);
     }
 }
 
@@ -377,7 +377,7 @@ h1 {
     right: -100px;
     top: 50%;
     max-height: 80%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) scaleX(-1);
     max-width: 40%;
     animation: slide-in-right 1.5s ease-out;
     transform-origin: center;
@@ -607,9 +607,11 @@ aside {
 #fight-screen .jammer .jammer-pic {
     width: 300px;
     position: absolute;
-    left: -50px;
-    bottom: -100px;
+    left: -40px;
+    bottom: -30px;
     max-width: 60%;
+    max-height: 60%;
+    object-fit: contain;
     animation: slide-in-left 1s ease-out;
 }
 
@@ -687,7 +689,7 @@ aside {
     position: absolute;
     top: 20px;
     right: -20px;
-    max-height: 70%;
+    max-height: 60%;
     width: auto;
     max-width: 70%;
     animation: blocker-appear 1s ease-out;
