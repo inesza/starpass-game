@@ -66,6 +66,7 @@ header {
 
 header img {
     width: 600px;
+    animation: zoom-entrance 1.5s ease-out;
 }
 
 button, .btn {
@@ -153,6 +154,11 @@ h1 {
     opacity: 80%;
 }
 
+:focus-visible {
+    outline: none;
+}
+
+/*-------------------- Animations --------------------*/
 @keyframes shrink {
     0% {
         transform: scale(1);
@@ -163,8 +169,121 @@ h1 {
     }
 }
 
-:focus-visible {
-    outline: none;
+@keyframes zoom-entrance {
+    0% {
+        transform: scale(0)
+    }  
+
+    60% {
+        transform: scale(1.5)
+    }
+    70% {
+        transform: scale(.9)
+    }
+    80% {
+        transform: scale(1.05)
+    }
+    90% {
+        transform: scale(0.95)
+    }
+    100% {
+        transform: scale(1)
+    }
+}
+
+@keyframes zoom-in {
+    0% {
+        transform: scale(0)
+    }  
+    100% {
+        transform: scale(1)
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.97);
+        box-shadow: -5px -5px 0px var(--orange), 5px 5px 0px var(--pink), 0 0 0 0 rgba(0, 0, 0, 0.7);
+    }
+
+    50% {
+        transform: scale(1);
+        box-shadow: -5px -5px 0px var(--orange), 5px 5px 0px var(--pink), 0 0 20px 20px rgba(0, 0, 0, 0);
+    }
+
+    100% {
+        transform: scale(0.97);
+        box-shadow: -5px -5px 0px var(--orange), 5px 5px 0px var(--pink), 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+}
+
+@keyframes slide-in-left {
+    0% {
+        left: -100%;
+    }
+
+    60% {
+        left: -5%;
+        transform: rotate(5deg);
+    }
+
+    70% {
+        transform: rotate(-5deg);
+    }
+
+    80% {
+        transform: rotate(3deg);
+    }
+
+    90% {
+        transform: rotate(-3deg);
+    }
+}
+
+@keyframes slide-in-right {
+    0% {
+        right: -100%;
+    }
+
+    60% {
+        right: -5%;
+        transform: translateY(-50%) rotate(5deg);
+    }
+
+    70% {
+        transform: translateY(-50%) rotate(-5deg);
+    }
+
+    80% {
+        transform: translateY(-50%) rotate(3deg);
+    }
+
+    90% {
+        transform: translateY(-50%) rotate(-3deg);
+    }
+}
+
+@keyframes blocker-appear {
+    0% {
+        right: -100%;
+    }
+
+    60% {
+        right: -5%;
+        transform: rotate(5deg) scaleX(-1);
+    }
+
+    70% {
+        transform: rotate(-5deg) scaleX(-1);
+    }
+
+    80% {
+        transform: rotate(3deg) scaleX(-1);
+    }
+
+    90% {
+        transform: rotate(-3deg) scaleX(-1);
+    }
 }
 
 /*-------------------- Sound & music --------------------*/
@@ -180,10 +299,15 @@ h1 {
     border: none;
     border-radius: 50%;
     margin-left: 1em;
+    transition: .5s;
 }
 
 .switch img {
     height: 30px;
+}
+
+.switch:hover {
+    transform: rotate(15deg) scale(.97)
 }
 
 /*-------------------- Start screen --------------------*/
@@ -210,22 +334,7 @@ h1 {
     animation: pulse 2s infinite;
 }
 
-@keyframes pulse {
-    0% {
-        transform: scale(0.97);
-        box-shadow: -5px -5px 0px var(--orange), 5px 5px 0px var(--pink), 0 0 0 0 rgba(0, 0, 0, 0.7);
-    }
 
-    50% {
-        transform: scale(1);
-        box-shadow: -5px -5px 0px var(--orange), 5px 5px 0px var(--pink), 0 0 20px 20px rgba(0, 0, 0, 0);
-    }
-
-    100% {
-        transform: scale(0.97);
-        box-shadow: -5px -5px 0px var(--orange), 5px 5px 0px var(--pink), 0 0 0 0 rgba(0, 0, 0, 0);
-    }
-}
 
 #start-button:not(:disabled):hover,
 #retry-btn:not(:disabled):hover,
@@ -253,21 +362,25 @@ h1 {
     text-align: center;
 }
 
-
-
 .left-player {
     position: absolute;
     left: 0;
     bottom: 10%;
     max-width: 30%;
+    height: 90%;
+    object-fit: contain;
+    animation: slide-in-left 1.5s ease-out;
 }
 
 .right-player {
     position: absolute;
     right: -100px;
     top: 50%;
+    max-height: 80%;
     transform: translateY(-50%);
     max-width: 40%;
+    animation: slide-in-right 1.5s ease-out;
+    transform-origin: center;
 }
 
 #how {
@@ -497,6 +610,7 @@ aside {
     left: -50px;
     bottom: -100px;
     max-width: 60%;
+    animation: slide-in-left 1s ease-out;
 }
 
 #fight-screen .stats {
@@ -516,6 +630,7 @@ aside {
     justify-content: center;
     align-items: center;
     width: 20%;
+    animation: zoom-in 1s ease-out;
 }
 
 #fight-screen .fight-actions .btn {
@@ -575,6 +690,7 @@ aside {
     max-height: 70%;
     width: auto;
     max-width: 70%;
+    animation: blocker-appear 1s ease-out;
 }
 
 #fight-screen .blocker .stats {
@@ -651,6 +767,10 @@ aside {
 
 #game-over #final-score {
     font-size: 2em;
+}
+
+.game-over-msg {
+    animation: zoom-entrance 1.5s ease-out;
 }
 
 /*-------------------- Credits --------------------*/
@@ -734,17 +854,20 @@ body.credits-page .btn-back:hover {
 
     .left-player {
         max-width: 40%;
-        /* top: 0;
+        animation: none;
+        top: 0;
         transform: translateX(-50%);
-        left: 50%; */
+        left: 50%;
+        height: auto;
     }
 
     .right-player {
-        /* left: -30px;
-        transform: scaleX(-1); */
+        animation: none;
+        left: -30px;
+        transform: scaleX(-1);
         max-width: 50%;
-        /* bottom: 0;
-        top: auto; */
+        bottom: 0;
+        top: auto;
     }
 
     #jammer-choice .title {

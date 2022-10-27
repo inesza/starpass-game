@@ -123,10 +123,6 @@ window.onload = () => {
 		}
 	}
 
-
-
-
-
 	function music() {
 		let musicButton = document.getElementById('music-switch')
 		let musicButtonIcon = document.querySelector('#music-switch img')
