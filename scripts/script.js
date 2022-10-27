@@ -4,21 +4,23 @@ import Jammer from "./classes/jammer.js";
 window.onload = () => {
 	let canvas = document.getElementById("canvas")
 	let ctx = canvas.getContext("2d")
-	document.getElementById('sound-switch').addEventListener('click', soundSwitch)
-	function soundSwitch() {
 
 
-	}
+	// Sounds and music
+	let pop = new Audio('./assets/sounds/pop.wav')
+	let clap1 = new Audio('./assets/sounds/clap1.wav')
+	let clap2 = new Audio('./assets/sounds/clap2.wav')
+
+	let backgroundMusic = new Audio('./assets/sounds/music.wav')
 
 	let chosenJammer = false
 	let jammers = []
 
-
 	function chooseJammer() {
 		jammers = []
-		jammers.push(new Jammer(canvas, ctx, 4, 8, './assets/blond-jammer.png'))
+		jammers.push(new Jammer(canvas, ctx, 3, 8, './assets/blond-jammer.png'))
 		jammers.push(new Jammer(canvas, ctx, 5, 5, './assets/brunette-jammer.png'))
-		jammers.push(new Jammer(canvas, ctx, 8, 4, './assets/pink-jammer.png'))
+		jammers.push(new Jammer(canvas, ctx, 8, 3, './assets/pink-jammer.png'))
 		for (let i = 0; i < jammers.length; i++) {
 			let article = document.createElement('article')
 			article.setAttribute("id", `jammer${i}`);
@@ -39,9 +41,11 @@ window.onload = () => {
 					chosenJammer = false
 					document.getElementById('ready-button').disabled = true
 					document.getElementById('ready-button').classList.remove('double-shadow')
+					document.getElementById("tooltip").classList.remove('hidden')
 				} else {
 					document.getElementById('ready-button').disabled = false
 					document.getElementById('ready-button').classList.add('double-shadow')
+					document.getElementById("tooltip").classList.add('hidden')
 					chosenJammer = jammers[i]
 					document.getElementById('chosen-jammer-pic').src = chosenJammer.image.src
 				}
@@ -59,6 +63,10 @@ window.onload = () => {
 			document.getElementById('jammer-choice').style.display = 'none';
 			document.getElementById('canvas-screen').style.display = 'flex';
 			let game = new Game(chosenJammer)
+			if (!soundButton.classList.contains("sound-off")) {
+				clap1.play()
+				clap2.play()
+			}
 			game.startGame();
 		})
 	}
@@ -79,7 +87,7 @@ window.onload = () => {
 	document.getElementById('close').onclick = () => {
 		document.getElementById('how-dialog').close()
 	}
-	
+
 	document.getElementById('retry-btn').addEventListener('click', function () {
 		chosenJammer = false
 		document.getElementById('game-zone').style.display = 'flex'
@@ -91,57 +99,50 @@ window.onload = () => {
 
 	})
 
-	let pop = new Audio('./assets/sounds/pop.wav')
-	let punch = new Audio('./assets/sounds/punch.wav')
-	let swoosh = new Audio('./assets/sounds/swoosh.wav')
-	// let cheer = new Audio('./assets/sounds/test.wav')
-	// document.addEventListener('click', () => {
-	// 	cheer.play()
-	// }, {once : true})
-	
+	function popPlay() {
+		pop.play()
+	}
+
 	let soundButton = document.getElementById('sound-switch')
-	let soundButtonIcon = document.querySelector('#sound-switch img')		
+	let soundButtonIcon = document.querySelector('#sound-switch img')
 	let buttonsPop = document.querySelectorAll('.pop')
-	audios()
-	soundButton.addEventListener('click', function () {
-		soundButton.classList.toggle("sound-off")
-		if (!soundButton.classList.contains("sound-off")) {
-			console.log("play")
-			soundButtonIcon.src = "./assets/sound-on.svg"
-			audios()
-		} else {
-			console.log('pause')
+	sounds()
+	soundButton.addEventListener('click', function () { soundButton.classList.toggle("sound-off"); sounds(); console.log(soundButton) })
+
+	function sounds() {
+		if (soundButton.classList.contains("sound-off")) {
 			soundButtonIcon.src = "./assets/sound-off.svg"
-			pop.pause()
-			punch.pause()
-			swoosh.pause()
-			// cheer.pause()
+			buttonsPop.forEach((button) => {
+				button.removeEventListener('click', popPlay)
+			})
+		} else {
+			soundButtonIcon.src = "./assets/sound-on.svg"
+			buttonsPop.forEach((button) => {
+				button.addEventListener('click', popPlay)
+			})
 		}
-
-	})
-
-	function audios() {
-		buttonsPop.forEach((button) => {
-			button.addEventListener('click', function () {
-				console.log("Pop")
-				pop.play()
-			})
-		})
-		document.getElementById('btn-force').addEventListener('click', () => punch.play())
-        document.getElementById('btn-feint').addEventListener('click', () => swoosh.play())
-
 	}
 
-	function stopAudios() {
-		buttonsPop.forEach((button) => {
-			button.addEventListener('click', function () {
-				console.log("Pop")
-				pop.pause()
-			})
-		})
-		document.getElementById('btn-force').addEventListener('click', () => punch.pause())
-        document.getElementById('btn-feint').addEventListener('click', () => swoosh.pause())
-	}
 
+
+
+
+	function music() {
+		let musicButton = document.getElementById('music-switch')
+		let musicButtonIcon = document.querySelector('#music-switch img')
+		musicButton.addEventListener('click', () => {
+			musicButton.classList.toggle("sound-off")
+			if (!musicButton.classList.contains("sound-off")) {
+				musicButtonIcon.src = "./assets/music-on.svg"
+				backgroundMusic.volume = .5
+				backgroundMusic.loop = true
+				backgroundMusic.play()
+			} else {
+				musicButtonIcon.src = "./assets/music-off.svg"
+				backgroundMusic.pause()
+			}
+		})
+	}
+	music()
 
 }

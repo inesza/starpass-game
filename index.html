@@ -18,9 +18,9 @@
         <img src="./assets/logo.svg" alt="StarPass" />
         <h1>A roller derby game</h1>
       </header>
-      <div id="best-score-box" class="hidden">
+      <div id="best-score-box" class="d-none">
         <h3>Best score</h3>
-        <p><span id="best-score">0</span> points</p>
+        <p id="best-score"><span>0</span> points</p>
       </div>
       <button id="start-button" class="btn double-shadow pop">Start</button>
       <span id="how">How to play?</span>
@@ -50,14 +50,16 @@
           <p>If you loose the fight, you’ll lose some stamina and must keep fighting.</p>
           <p><strong>If your stamina falls to 0, you’ll loose</strong></p>
         </article>
+        <div class="credits"><a href="./credits.html">Credits</a></div>
       </dialog>
     </section>
-    <section id="jammer-choice" class="hidden">
+    <section id="jammer-choice" class="d-none">
       <div class="title"><img src="./assets/choose-your-jammer.svg" alt="Choose your jammer"></div>
       <div id="jammers"></div>
       <div id="start-container" class="hidden">
-        <button id="ready-button" class="btn double-shadow pop" data-tooltip="Don't select more than one jammer">I'm
-          ready</button>
+        <div id="tooltip">Select exactly one jammer!</div>
+        <button id="ready-button" class="btn double-shadow pop">I'm ready</button>
+          
       </div>
     </section>
 
@@ -136,7 +138,12 @@
     </div>
     <button id="retry-btn" class="btn double-shadow pop">Retry</button>
   </section>
-  <button id="sound-switch" class="double-shadow"><img src="./assets/sound-on.svg" alt="Sound"></button>
+  <div id="switches">
+    <button id="music-switch" class="switch sound-off double-shadow"><img src="./assets/music-off.svg" alt="Music"></button>
+    <button id="sound-switch" class="double-shadow switch"><img src="./assets/sound-on.svg" alt="Sound"></button>
+  </div>
+  <div id="logo-white"><img src="./assets/logo-white.png" alt=""></div>
+
 </body>
 
 </html>

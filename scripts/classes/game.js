@@ -1,5 +1,4 @@
 import Blocker from "./blocker.js"
-import Jammer from "./jammer.js"
 import Track from "./track.js"
 import Booster from "./booster.js"
 
@@ -81,17 +80,18 @@ class Game {
                 return
             }
         }
-        this.updateScore();
-        if (this.frames % 300 === 0 && this.frames > 0) { 
+        
+        if (this.frames % 300 === 0 && this.frames != 0) { 
             this.framesModulo -= 10
         }
+        this.updateScore();
 
         this.frames = requestAnimationFrame(() => { this.startGame() });
     }
 
     updateScore() {
         let scoreCounter = document.getElementById('score-counter')
-        if (this.frames % 120 === 0 && this.frames > 0) {
+        if (this.frames % this.framesModulo === 0 && this.frames > 0) {
             this.score += 4
             if (this.score <= 1) {
                 scoreCounter.innerHTML = `<span>${this.score}</span> point`
@@ -132,14 +132,20 @@ class Game {
 
     gameOver() {
         if (this.jammer.stamina <= 0) {
+            if (!document.getElementById('sound-switch').classList.contains("sound-off")) {
+                let fail = new Audio('./assets/sounds/fail.mp3')
+                fail.play()
+            }
             document.getElementById('fight-screen-dialog').close()
             document.getElementById('game-zone').style.display = 'none'
             document.getElementById('game-over').style.display = "flex"
-            document.getElementById('final-score').innerHTML = this.score
+                    
             this.jammer.stamina = 100
 
             this.jammer.updateStamina()
             this.updateScore()
+            document.getElementById('final-score').textContent = this.score   
+            document.getElementById('start-container').classList.add("hidden")
             this.score = 0
             this.blockers = []
             this.boosters = []

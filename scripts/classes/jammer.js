@@ -37,13 +37,13 @@ class Jammer {
     }
 
     move(direction) {
-        switch(direction) {
+        switch (direction) {
             case "left":
-				this.moveLeft()
-				break
-			case "right":
-				this.moveRight()
-				break 
+                this.moveLeft()
+                break
+            case "right":
+                this.moveRight()
+                break
         }
     }
 
@@ -66,11 +66,19 @@ class Jammer {
         let brutePower = ''
         let loseMsg = ""
         function fightForce() {
+            if (!document.getElementById('sound-switch').classList.contains("sound-off")) {
+                let punch = new Audio('./assets/sounds/punch.wav')
+                punch.play()
+            }
             brutePower = "force"
             loseMsg = "stronger"
             fightOutcome()
         }
         function fightFeint() {
+            if (!document.getElementById('sound-switch').classList.contains("sound-off")) {
+                let swoosh = new Audio('./assets/sounds/swoosh.wav')
+                swoosh.play()
+            }
             brutePower = "speed"
             loseMsg = "faster"
             fightOutcome()
@@ -88,6 +96,10 @@ class Jammer {
                 document.querySelector('section.fight-actions').style.display = 'none';
                 document.querySelector('section.jammer').classList.add('jammer-continue')
                 let continueSection = document.getElementById("continue-template").content.cloneNode(true);
+                if (!document.getElementById('sound-switch').classList.contains("sound-off")) {
+                    let yay = new Audio('./assets/sounds/yay.wav')
+                    yay.play()
+                }
                 document.getElementById("fight-screen").appendChild(continueSection);
                 document.getElementById('btn-continue').addEventListener('click', function () {
                     document.querySelector('.continue-section').remove()
