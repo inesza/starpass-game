@@ -12,6 +12,7 @@ class Jammer {
         this.icon.src = "./assets/jammer-icon.png";
         this.outSide = null;
         this.strength = strength
+        this.speed = speed
         this.stamina = 100
         this.speedX = 7
         this.isBoosted = false
@@ -85,7 +86,7 @@ class Jammer {
             if (outcome > 5) {
                 document.querySelector('section.blocker').style.display = 'none'
                 document.querySelector('section.fight-actions').style.display = 'none';
-                document.querySelector('section.jammer').style.width = "60%"
+                document.querySelector('section.jammer').classList.add('jammer-continue')
                 let continueSection = document.getElementById("continue-template").content.cloneNode(true);
                 document.getElementById("fight-screen").appendChild(continueSection);
                 document.getElementById('btn-continue').addEventListener('click', function () {

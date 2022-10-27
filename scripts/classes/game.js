@@ -12,6 +12,7 @@ class Game {
         this.track = new Track(this.canvas, this.ctx)
         this.jammer = jammer
         this.frames = 0
+        this.framesModulo = 120
         this.score = 0
         this.blockers = []
         this.boosters = []
@@ -29,7 +30,8 @@ class Game {
 
     startGame() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        if (this.frames % 120 === 0) {
+
+        if (this.frames % this.framesModulo === 0) {
             let x = (Math.floor(Math.random() * (this.canvas.width / 2)))
             let y = -20
             let rand = Math.floor(Math.random() * 50)
@@ -38,7 +40,7 @@ class Game {
             this.blockers.push(new Blocker(this.canvas, this.ctx, x + 120, y - rand))
             this.blockers.push(new Blocker(this.canvas, this.ctx, x + 200, y))
             this.boosters.push(new Booster(this.canvas, this.ctx))
-        }
+        }        
         this.track.draw();
         this.track.move();
         if (this.isColliding) {
@@ -80,6 +82,9 @@ class Game {
             }
         }
         this.updateScore();
+        if (this.frames % 300 === 0 && this.frames > 0) { 
+            this.framesModulo -= 10
+        }
 
         this.frames = requestAnimationFrame(() => { this.startGame() });
     }
@@ -180,13 +185,8 @@ class Game {
         }, false)
 
         this.canvas.addEventListener('touchend', (e) => {
-            // let clientX = e.touches[0].clientX;
-            // if (clientX > this.canvas.width / 2) {
                 this.pressedKeys.right = false
-            // } else {
                 this.pressedKeys.left = false
-            // }
-
         }, false)
     }
 

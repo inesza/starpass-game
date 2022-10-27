@@ -371,6 +371,10 @@ h1 {
     flex-direction: column;
 }
 
+#score-counter {
+    text-align: center;
+}
+
 #score-counter span {
     font-size: 3em;
 }
@@ -495,10 +499,15 @@ aside {
     transition: .3s;
 }
 
-#btn-feint:hover, #btn-continue:hover {
+#btn-feint:hover,
+#btn-continue:hover {
     transform: scaleX(0.95);
     box-shadow: inset .2em .2em rgba(255, 32, 159, 0.3);
-    
+
+}
+
+.jammer-continue {
+    width: 60%;
 }
 
 /* Blocker */
@@ -607,7 +616,8 @@ aside {
 
 @media (max-width : 600px) {
 
-    #game-zone, body {
+    #game-zone,
+    body {
         max-height: none;
         min-height: 100vh;
         height: auto;
@@ -647,20 +657,42 @@ aside {
     }
 
     #jammers article {
-        height: 300px;
+        height: 150px;
         margin: .5em .5em 1em .5em;
         width: 100%;
+        flex-direction: row;
+        max-width: 100%;
+        background-position: top left 5%;
+        background-size: 50%;
     }
 
     #jammers {
         flex-wrap: wrap;
     }
 
+    #jammer-choice article>div {
+        height: 100%;
+        width: 40%;
+        padding: 1em;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        row-gap: 1em;
+    }
+
+    #jammer-choice article>div div {
+        font-size: 1em;
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+
     #start-button,
     #retry-btn,
     #ready-button {
         font-size: 1.7em;
         padding: 8px 50px;
+        margin-bottom: 1em;
     }
 
     .dialog {
@@ -671,7 +703,8 @@ aside {
         flex-direction: column;
     }
 
-    #fight-screen .jammer, #fight-screen .blocker {
+    #fight-screen .jammer,
+    #fight-screen .blocker {
         display: flex;
         flex-direction: row-reverse;
         align-items: center;
@@ -684,11 +717,12 @@ aside {
         width: 50%;
     }
 
-    #fight-screen .jammer .jammer-pic, #fight-screen .blocker .blocker-pic {
+    #fight-screen .jammer .jammer-pic,
+    #fight-screen .blocker .blocker-pic {
         position: relative;
         height: 100%;
         width: auto;
-        object-fit: contain  
+        object-fit: contain
     }
 
     #fight-screen .jammer .jammer-pic {
@@ -717,9 +751,14 @@ aside {
 
     .continue-section {
         position: absolute;
-        top: 30%;
+        bottom: 20%;
         left: 50%;
         transform: translateX(-50%);
+        width: 100%;
+    }
+
+    .jammer-continue {
+        width: 100%;
     }
 
     #game-over {
@@ -735,13 +774,18 @@ aside {
         top: 0;
         transform: translateX(-50%);
         left: 50%;
+        max-height: 40%;
     }
 
     .right-player {
         left: -30px;
         transform: scaleX(-1);
-        max-width: 50%;
+        max-width: 60%;
         bottom: 0;
         top: auto;
+    }
+
+    .btn {
+        font-size: 1em;
     }
 }
