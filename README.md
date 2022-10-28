@@ -39,12 +39,13 @@ Created with :
 
 ## Known issues
 
-- Scoring is a bit hectic
+- Problem with restarting the game (sometimes you cannot see the blockers, sometimes too many of them are generated at once)
 - Unnecessary vertical scroll on smaller screens
 
 ## What's next
 
 - Local best score
+- Have a proper restart function
 
 
 ## Demo
