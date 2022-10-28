@@ -1003,7 +1003,7 @@ body.credits-page .btn-back:hover {
 
 }
 
-@media (max-width: 440px) {
+@media (max-width: 500px) {
 
     header img {
         animation: zoom-in 1.5s ease-out;
