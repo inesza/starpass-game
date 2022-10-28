@@ -96,7 +96,6 @@ window.onload = () => {
 		document.getElementById('canvas-screen').style.display = 'none';
 		document.getElementById("jammers").innerHTML = null
 		document.getElementById('start-button').addEventListener('click', choiceScreen)
-
 	})
 
 	function popPlay() {

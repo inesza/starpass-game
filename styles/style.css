@@ -779,6 +779,10 @@ aside {
 
 /*-------------------- Credits --------------------*/
 
+body.credits-page {
+    padding: 1em;
+}
+
 body.credits-page section {
     background: white;
     border-radius: 30px;
@@ -1027,5 +1031,18 @@ body.credits-page .btn-back:hover {
 
     .btn {
         font-size: 1em;
+    }
+
+    #how-dialog {
+        font-size: 1em;
+        padding-top: 3em;
+    }
+
+    #how-dialog h3 {
+        font-size: 1.3em;
+    }
+
+    #how-dialog article.controls img {
+        display: none;
     }
 }

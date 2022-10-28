@@ -40,11 +40,11 @@ Created with :
 ## Known issues
 
 - Scoring is a bit hectic
+- Unnecessary vertical scroll on smaller screens
 
 ## What's next
 
 - Local best score
-- Fix scoring problem
 
 
 ## Demo

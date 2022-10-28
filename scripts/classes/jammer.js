@@ -91,6 +91,7 @@ class Jammer {
             }
             let rand = Math.floor(Math.random() * (10)) + 1
             let outcome = brutePower + rand
+            
             if (outcome > 6) {
                 document.querySelector('section.blocker').style.display = 'none'
                 document.querySelector('section.fight-actions').style.display = 'none';
@@ -101,20 +102,22 @@ class Jammer {
                     yay.play()
                 }
                 document.getElementById("fight-screen").appendChild(continueSection);
-                document.getElementById('btn-continue').addEventListener('click', function () {
+                document.getElementById('btn-continue').addEventListener('click', continueGame)
+                function continueGame() {
+                    document.getElementById('btn-continue').removeEventListener('click', continueGame)
                     document.querySelector('.continue-section').remove()
                     document.getElementById('fight-screen-dialog').close()
                     document.querySelector('section.blocker').style.display = 'flex'
                     document.querySelector('section.fight-actions').style.display = 'flex';
                     document.querySelector('section.jammer').style.width = "40%"
-                    game.score -= 4
                     setTimeout(() => {
                         game.startGame()
                     }, 500)
                     setTimeout(() => {
                         game.isColliding = false
                     }, 1500)
-                })
+                }
+                
                 document.getElementById('btn-force').removeEventListener('click', fightForce)
                 document.getElementById('btn-feint').removeEventListener('click', fightFeint)
                 return
@@ -129,6 +132,10 @@ class Jammer {
                 jammer.stamina -= 10
                 jammer.updateStamina()
                 game.gameOver()
+                if (game.gameIsOver === true) {
+                    document.getElementById('btn-force').removeEventListener('click', fightForce)
+                    document.getElementById('btn-feint').removeEventListener('click', fightFeint)
+                }
                 return
             }
         }
